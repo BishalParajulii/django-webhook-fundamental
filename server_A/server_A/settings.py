@@ -114,7 +114,9 @@ STATIC_URL = 'static/'
 
 
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-
-WEBHOOK_SECRET = '1234'
-WEBHOOK_TARGET_URL = 'http://127.0.0.1:8001/webhooks/receive/'  
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET')
+WEBHOOK_TARGET_URL = os.getenv('WEBHOOK_TARGET_URL')
