@@ -6,13 +6,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.http import JsonResponse , HttpResponseBadRequest
 import json
-# Create your views here.
+from .rate_limit import is_rate_limited
 
 
 @csrf_exempt
 def receive_webhook(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Invalid request method")
+    
+    if is_rate_limited(request):
+        print("Rate limit exceeded")
+        return JsonResponse({'error' : 'Too many requests'} , status=429)
     
     incomming_signature = request.headers.get('X-Webhook-Signature', '')
     body = request.body 

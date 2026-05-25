@@ -2,7 +2,8 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Products , Orders
-from .webhook import send_webhook  
+from .webhook import send_webhook 
+from .queue import queue_webhook
 
 
 @csrf_exempt
@@ -13,7 +14,7 @@ def create_product(request):
     body = json.loads(request.body)
     product = Products.objects.create(name=body['name'])
 
-    send_webhook('product.created', {   
+    queue_webhook('product.created', {   
         'product_id': product.id,
         'name': product.name,
     })
@@ -35,7 +36,7 @@ def create_order(request):
         quantity=body['quantity']
     )
 
-    send_webhook('order.created', {
+    queue_webhook('order.created', {
         'order_id': order.id,
         'product': product.name,
         'quantity': order.quantity,

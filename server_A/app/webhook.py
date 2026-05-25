@@ -5,6 +5,8 @@ import uuid
 import requests
 from django.conf import settings
 
+
+
 def send_webhook(event_type, data):
     payload = {
         'event_id': str(uuid.uuid4()),
