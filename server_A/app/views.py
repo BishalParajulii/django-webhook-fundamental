@@ -14,6 +14,9 @@ def create_product(request):
     body = json.loads(request.body)
     product = Products.objects.create(name=body['name'])
 
+    #the QUeue_Webhook function will add the webhook event to the Redis queue instead of sending it directly
+
+
     queue_webhook('product.created', {   
         'product_id': product.id,
         'name': product.name,
