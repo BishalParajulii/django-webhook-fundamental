@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Products , Orders
-from .webhook import send_webhook 
+#from .webhook import send_webhook 
 from .queue import queue_webhook
 
 
@@ -35,6 +35,8 @@ def create_order(request):
         product=product,
         quantity=body['quantity']
     )
+    
+    #the QUeue_Webhook function will add the webhook event to the Redis queue instead of sending it directly
 
     queue_webhook('order.created', {
         'order_id': order.id,

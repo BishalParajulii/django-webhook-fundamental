@@ -15,3 +15,5 @@ def queue_webhook(event_type , data):
     }
     
     redis_client.lpush(QUEUE_NAME , json.dumps(payload))
+    
+#lpush adds to the left of the list

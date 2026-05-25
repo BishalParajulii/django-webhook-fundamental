@@ -10,6 +10,7 @@ import uuid
 import os
 import django
 
+# Set up Django environment for non django files
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "server_A.settings"
@@ -21,11 +22,13 @@ from django.conf import settings
 
 
 
+#dedis connection
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 QUEUE_NAME = "my_queue"
 
 
+#5 requests per 10 seconds
 RATE_LIMIT = 5     
 WINDOW = 10      
 
@@ -33,7 +36,7 @@ request_times = []
 
 
 
-
+# Check if we are allowed to send a request based on the rate limit
 def allowed():
     global request_times
 
@@ -52,7 +55,7 @@ def allowed():
     return False
 
 
-
+# Worker function to continuously process tasks from the Redis queue
 def send_request(task):
     url = "http://localhost:8001/webhooks/receive/"
     payload = {
@@ -94,6 +97,7 @@ def send_request(task):
         r.lpush(QUEUE_NAME, json.dumps(task))
 
 
+# Main worker loop to continuously process tasks from the Redis queue
 def worker():
     print("Worker started...")
 

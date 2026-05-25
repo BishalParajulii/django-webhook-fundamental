@@ -9,6 +9,7 @@ import json
 from .rate_limit import is_rate_limited
 
 
+#webhook endpoint to receive events from another service
 @csrf_exempt
 def receive_webhook(request):
     if request.method != "POST":

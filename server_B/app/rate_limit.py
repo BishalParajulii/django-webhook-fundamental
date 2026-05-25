@@ -2,10 +2,12 @@ import time
 
 request_times = []
 
-
+# 5 requests per 10 seconds
 RATE_LIMIT = 5
 WINDOW = 10
 
+
+# Simple in-memory rate limiter
 def is_rate_limited(request):
 
     global request_times
